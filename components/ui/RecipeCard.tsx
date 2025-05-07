@@ -15,7 +15,7 @@ export const RecipeCard = ({
   ingredientsRequired,
 }: RecipeCardProps) => {
   return (
-    <View className="bg-white p-4 rounded-lg shadow-md">
+    <View className="bg-white p-4 rounded-lg border border-gray-200">
       <Text className="text-2xl font-bold mb-2">{name}</Text>
 
       {availableIngredientsUsed && availableIngredientsUsed.length > 0 && (

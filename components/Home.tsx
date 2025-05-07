@@ -97,9 +97,8 @@ export default function Home() {
       {error ? (
         <Text className="text-red-500 mt-4 text-center">{error}</Text>
       ) : null}
-      {recipes.length > 0 && (
-        <View className="mt-4 flex-1">
-          <Text className="text-xl font-bold mb-4">Recetas generadas:</Text>
+      <View className="p-6">
+        {recipes.length > 0 && (
           <FlatList
             data={recipes}
             renderItem={renderRecipe}
@@ -107,8 +106,8 @@ export default function Home() {
             contentContainerStyle={{ paddingBottom: 20 }}
             showsVerticalScrollIndicator={false}
           />
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 }
