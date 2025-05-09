@@ -1,18 +1,13 @@
 import axios from "axios";
+import { RAILWAY_API_URL } from "@env";
 
-// Configuración de la URL base de la API
-// Para desarrollo local:
-// - Android Emulator: usar 10.0.2.2
-// - iOS Simulator: usar localhost
-// - Dispositivo físico: usar la IP de tu computadora
-const API_URL = process.env.API_URL || "http://10.0.2.2:3001/api";
-
+const API_URL = RAILWAY_API_URL;
 // Función para generar recetas basadas en ingredientes
 export const generateRecipes = async (data: { ingredients: string }) => {
   try {
-    console.log("Enviando solicitud a:", `${API_URL}/generate-recipes`);
+    console.log("Enviando solicitud a:", `${API_URL}/api/generate-recipes`);
     console.log("Datos enviados:", data);
-    const response = await axios.post(`${API_URL}/generate-recipes`, data);
+    const response = await axios.post(`${API_URL}/api/generate-recipes`, data);
     console.log("Respuesta recibida:", response.data);
     return response.data;
   } catch (error) {
@@ -29,9 +24,9 @@ export const filterRecipes = async (data: {
   restrictions: string;
 }) => {
   try {
-    console.log("Enviando solicitud a:", `${API_URL}/filter-recipes`);
+    console.log("Enviando solicitud a:", `${API_URL}/api/filter-recipes`);
     console.log("Datos enviados:", data);
-    const response = await axios.post(`${API_URL}/filter-recipes`, data);
+    const response = await axios.post(`${API_URL}/api/filter-recipes`, data);
     console.log("Respuesta recibida:", response.data);
     return response.data;
   } catch (error) {

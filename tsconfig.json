@@ -17,7 +17,8 @@
     "containers",
     "nativewind-env.d.ts",
     "app/index.tsx",
-    "components/Home.tsx"
+    "components/Home.tsx",
+    "env.d.ts"
   ],
   "extends": "expo/tsconfig.base"
 }
