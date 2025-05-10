@@ -38,7 +38,7 @@ export const RecipeCard = ({
 
       {ingredientsRequired && ingredientsRequired.length > 0 && (
         <View className="flex flex-col mb-4">
-          <Text className="text-lg font-bold">Ingredientes adicionales:</Text>
+          <Text className="text-lg font-bold">Ingredientes requeridos:</Text>
           <Text className="text-sm text-gray-500">
             {ingredientsRequired.join(", ")}
           </Text>

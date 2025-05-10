@@ -25,6 +25,8 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-    }
+    },
+    "scheme": "pocketchef",
+    "plugins": ["expo-secure-store", "expo-web-browser"]
   }
 }

@@ -10,12 +10,12 @@ import { useState } from "react";
 import { filterRecipes, generateRecipes } from "../services/api";
 import { Button } from "./ui/Buttton";
 import { RecipeCard } from "./ui/RecipeCard";
-
+import { Recipe } from "../types";
 export default function Home() {
   const insets = useSafeAreaInsets();
   const [ingredients, setIngredients] = useState("");
   const [restrictions, setRestrictions] = useState("");
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
