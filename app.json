@@ -27,6 +27,10 @@
       "bundler": "metro"
     },
     "scheme": "pocketchef",
-    "plugins": ["expo-secure-store", "expo-web-browser"]
+    "plugins": [
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-router"
+    ]
   }
 }

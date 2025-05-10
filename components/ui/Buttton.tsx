@@ -1,10 +1,17 @@
 import React from "react";
-import { Pressable, PressableProps, Text } from "react-native";
+import {
+  Pressable,
+  PressableProps,
+  Text,
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 
 interface ButtonProps extends PressableProps {
   title: string;
-  buttonStyle?: string;
-  textStyle?: string;
+  buttonStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export const Button = ({
@@ -15,8 +22,8 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   return (
-    <Pressable className={buttonStyle} onPress={onPress} {...props}>
-      <Text className={textStyle}>{title}</Text>
+    <Pressable style={buttonStyle} onPress={onPress} {...props}>
+      <Text style={textStyle}>{title}</Text>
     </Pressable>
   );
 };

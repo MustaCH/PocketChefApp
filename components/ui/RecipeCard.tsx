@@ -16,8 +16,12 @@ export const RecipeCard = ({
 }: RecipeCardProps) => {
   return (
     <View
-      className="bg-white p-4 rounded-lg border border-gray-200"
       style={{
+        backgroundColor: "white",
+        padding: 16,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: "#e0e0e0",
         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
         shadowOffset: { width: 0, height: 2 },
         shadowColor: "#000",
@@ -25,29 +29,49 @@ export const RecipeCard = ({
         shadowRadius: 10,
       }}
     >
-      <Text className="text-2xl font-bold mb-2">{name}</Text>
+      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 16 }}>
+        {name}
+      </Text>
 
       {availableIngredientsUsed && availableIngredientsUsed.length > 0 && (
-        <View className="flex flex-col mb-4">
-          <Text className="text-lg font-bold">Ingredientes disponibles:</Text>
-          <Text className="text-sm text-gray-500">
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: 16,
+            gap: 8,
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            Ingredientes disponibles:
+          </Text>
+          <Text style={{ fontSize: 14, color: "gray" }}>
             {availableIngredientsUsed.join(", ")}
           </Text>
         </View>
       )}
 
       {ingredientsRequired && ingredientsRequired.length > 0 && (
-        <View className="flex flex-col mb-4">
-          <Text className="text-lg font-bold">Ingredientes requeridos:</Text>
-          <Text className="text-sm text-gray-500">
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: 16,
+            gap: 8,
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            Ingredientes requeridos:
+          </Text>
+          <Text style={{ fontSize: 14, color: "gray" }}>
             {ingredientsRequired.join(", ")}
           </Text>
         </View>
       )}
 
-      <View className="flex flex-col">
-        <Text className="text-lg font-bold">Instrucciones:</Text>
-        <Text className="text-sm text-gray-500">{instructions}</Text>
+      <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Instrucciones:</Text>
+        <Text style={{ fontSize: 14, color: "gray" }}>{instructions}</Text>
       </View>
     </View>
   );

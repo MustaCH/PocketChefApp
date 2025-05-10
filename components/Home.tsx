@@ -11,6 +11,8 @@ import { filterRecipes, generateRecipes } from "../services/api";
 import { Button } from "./ui/Buttton";
 import { RecipeCard } from "./ui/RecipeCard";
 import { Recipe } from "../types";
+import { RecipeForm } from "./RecipeForm";
+
 export default function Home() {
   const insets = useSafeAreaInsets();
   const [ingredients, setIngredients] = useState("");
@@ -42,103 +44,80 @@ export default function Home() {
     }
   };
 
-  const renderRecipe = ({ item }: { item: any }) => (
-    <RecipeCard
-      name={item.name || "Receta sin nombre"}
-      instructions={item.instructions || ""}
-      availableIngredientsUsed={item.availableIngredientsUsed || []}
-      ingredientsRequired={item.ingredientsRequired || []}
-    />
-  );
-
   return (
-    <ScrollView
-      className="flex"
-      style={{
-        paddingBottom: insets.bottom,
-        paddingTop: insets.top + 16,
-      }}
-    >
+    <ScrollView className="flex" showsVerticalScrollIndicator={false}>
       <View
-        className="flex flex-col gap-2 m-4 border border-gray-200 rounded-lg p-4"
         style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
           boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "white",
           shadowOffset: { width: 0, height: 2 },
           shadowColor: "#000",
           shadowOpacity: 0.1,
           shadowRadius: 10,
+          borderColor: "gray",
+          borderWidth: 0.5,
+          borderRadius: 16,
+          margin: 16,
+          padding: 16,
         }}
       >
         {recipes.length === 0 && (
-          <View className="flex flex-col gap-2">
-            <Text className="text-2xl font-bold">
-              ¿Qué ingredientes tienes?
-            </Text>
-            <Text className="text-sm text-gray-500">
-              Ingresa los ingredientes que tienes en tu cocina y nosotros
-              generaremos recetas deliciosas para ti!
-            </Text>
-          </View>
-        )}
-        {recipes.length === 0 ? (
-          <View className="flex flex-col gap-4 mt-4">
-            <View>
-              <Text>Ingredientes</Text>
-              <TextInput
-                className="border border-gray-300 bg-gray-200 rounded-lg p-2 mt-2"
-                placeholder="e., pollo, arroz, brocoli"
-                placeholderTextColor="#888"
-                value={ingredients}
-                onChangeText={setIngredients}
-              />
-            </View>
-            <View>
-              <Text>Restricciones dietarias (Opcional)</Text>
-              <TextInput
-                className="border border-gray-300 bg-gray-200 rounded-lg p-2 mt-2"
-                placeholder="e., vegano, libre de gluten"
-                placeholderTextColor="#888"
-                value={restrictions}
-                onChangeText={setRestrictions}
-              />
-            </View>
-          </View>
-        ) : (
-          <View className="flex flex-col gap-4 my-4">
-            <Text className="text-xl font-bold">
-              Recetacetas generadas con:
-            </Text>
-            <Text className="text-lg font-semibold">{ingredients}</Text>
-            {restrictions && (
-              <Text className="text-lg font-bold">{restrictions}</Text>
-            )}
-          </View>
-        )}
-        <View className="flex flex-row justify-between gap-2">
-          <Button
-            buttonStyle={`bg-blue-500 p-6 rounded-lg ${
-              recipes.length > 0 ? "w-1/2" : "w-full"
-            }`}
-            textStyle="text-white text-lg font-semibold text-center"
-            title={
-              loading
-                ? "Generando..."
-                : recipes.length > 0
-                ? "Regenerar"
-                : "Generar recetas"
-            }
-            onPress={handleSubmit}
-            disabled={loading}
+          <RecipeForm
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+            restrictions={restrictions}
+            setRestrictions={setRestrictions}
+            onSubmit={handleSubmit}
+            loading={loading}
+            showInputs={recipes.length === 0}
           />
-          {recipes.length > 0 && (
+        )}
+        {recipes.length > 0 && (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <Button
-              buttonStyle="bg-red-500 p-6 rounded-lg w-1/2"
-              textStyle="text-white text-lg font-semibold text-center"
+              buttonStyle={{
+                backgroundColor: "blue",
+                padding: 16,
+                borderRadius: 8,
+                width: recipes.length > 0 ? "48%" : "100%",
+              }}
+              textStyle={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+              title={loading ? "Generando..." : "Regenerar"}
+              onPress={handleSubmit}
+              disabled={loading}
+            />
+            <Button
+              buttonStyle={{
+                backgroundColor: "red",
+                padding: 16,
+                borderRadius: 8,
+                width: "48%",
+              }}
+              textStyle={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
               title="Borrar recetas"
               onPress={() => setRecipes([])}
             />
-          )}
-        </View>
+          </View>
+        )}
       </View>
       {loading && <ActivityIndicator size="large" color="#2563eb" />}
       {error ? (
