@@ -1,15 +1,12 @@
 import React from "react";
+import { ClerkProvider } from "@clerk/clerk-expo";
+import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { Stack } from "expo-router";
-import { Slot } from "expo-router";
-import { View } from "react-native";
-import Logo from "../components/Logo";
-export default function Layout() {
+
+export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{ headerLeft: () => <Logo />, title: "PocketChef" }}
-      />
-    </Stack>
+    <ClerkProvider tokenCache={tokenCache}>
+      <Stack screenOptions={{ headerShown: false }} />
+    </ClerkProvider>
   );
 }
