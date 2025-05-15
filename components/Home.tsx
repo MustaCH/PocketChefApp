@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { RecipeCard } from "./ui/RecipeCard";
 import { Recipe } from "../types";
 import { RecipeForm } from "./RecipeForm";
+import { RecipeModal } from "./ui/RecipeModal"; // Import RecipeModal from RecipeFor
 import theme from "../styles/theme";
 import {
   ScrollView,
@@ -13,6 +14,8 @@ import {
   ActivityIndicator,
   Alert,
   TouchableOpacity,
+  Modal,
+  Image,
 } from "react-native";
 
 export default function Home() {
@@ -22,6 +25,7 @@ export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async () => {
     if (ingredients.trim() === "") {
@@ -198,6 +202,13 @@ export default function Home() {
                 name={item.name}
                 difficulty={item.dificulty || "Desconocida"}
                 time={item.estimatedTime || "Desconocido"}
+                onPress={() => setShowModal(true)}
+              />
+              <RecipeModal
+                item={item}
+                visible={showModal}
+                showModal={() => setShowModal(false)}
+                closeModal={() => setShowModal(false)}
               />
             </View>
           ))}
