@@ -14,9 +14,5 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    // <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-    <Stack screenOptions={{ headerShown: false }} />
-    // </ClerkProvider>
-  );
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

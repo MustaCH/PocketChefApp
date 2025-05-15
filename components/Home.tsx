@@ -1,7 +1,7 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { filterRecipes, generateRecipes } from "../services/api";
-import { Button } from "./ui/Buttton";
+import { FontAwesome } from "@expo/vector-icons";
 import { RecipeCard } from "./ui/RecipeCard";
 import { Recipe } from "../types";
 import { RecipeForm } from "./RecipeForm";
@@ -139,16 +139,46 @@ export default function Home() {
             >
               ¡Aquí tienes tus delicias!
             </Text>
-            <View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Text
+                style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+              >
+                Recetas generadas: {recipes.length}
+              </Text>
               <TouchableOpacity
                 style={{
-                  backgroundColor: theme.colors.primary,
-                  padding: 16,
+                  backgroundColor: "transparent",
+                  borderWidth: 1,
+                  borderColor: theme.colors.primary,
+                  padding: 12,
                   borderRadius: 8,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
                 }}
                 onPress={() => setRecipes([])}
               >
-                <Text>Volver a generar</Text>
+                <FontAwesome
+                  name="refresh"
+                  size={20}
+                  color="white"
+                  style={{ marginRight: 10 }}
+                />
+                <Text
+                  style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                >
+                  Volver a generar
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

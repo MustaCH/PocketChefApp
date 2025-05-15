@@ -101,7 +101,6 @@ export function RecipeForm({
             onPress={handleAddIngredient}
           >
             {" "}
-            // Call handleAddIngredient
             <Text style={styles.addButtonText}>+ Añadir</Text>
           </TouchableOpacity>
         </View>
@@ -119,11 +118,13 @@ export function RecipeForm({
                     onPress={() => handleRemoveIngredient(ingredient)}
                     style={styles.removeIngredientButton}
                   >
-                    <FontAwesome
-                      name="times"
-                      size={12}
-                      color={theme.colors.textTertiary}
-                    />
+                    <Text>
+                      <FontAwesome
+                        name="times"
+                        size={12}
+                        color={theme.colors.textTertiary}
+                      />
+                    </Text>
                   </TouchableOpacity>
                 </View>
               ))}
