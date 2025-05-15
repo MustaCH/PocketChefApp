@@ -1,10 +1,3 @@
-import {
-  View,
-  Text,
-  TextInput,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { filterRecipes, generateRecipes } from "../services/api";
@@ -12,6 +5,15 @@ import { Button } from "./ui/Buttton";
 import { RecipeCard } from "./ui/RecipeCard";
 import { Recipe } from "../types";
 import { RecipeForm } from "./RecipeForm";
+import theme from "../styles/theme";
+import {
+  ScrollView,
+  View,
+  Text,
+  ActivityIndicator,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 
 export default function Home() {
   const insets = useSafeAreaInsets();
@@ -22,22 +24,75 @@ export default function Home() {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
+    if (ingredients.trim() === "") {
+      setError("Por favor, ingresa al menos un ingrediente.");
+      return;
+    }
     setLoading(true);
     setError("");
     setRecipes([]);
     try {
-      const response = await generateRecipes({ ingredients });
-      let finalRecipes = response.recipes || [];
-      if (restrictions.trim()) {
+      console.log("Generando recetas con ingredientes:", ingredients.trim());
+      const response = await generateRecipes({
+        ingredients: ingredients.trim(),
+      });
+
+      let finalRecipes: Recipe[] = response.recipes || [];
+      console.log("Recetas generadas:", {
+        count: finalRecipes.length,
+        sample: finalRecipes.length > 0 ? finalRecipes[0] : null,
+      });
+
+      let dietaryRestrictionsForAPI = "";
+      if (typeof restrictions === "string") {
+        dietaryRestrictionsForAPI = restrictions
+          .split(",")
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0)
+          .join(", ");
+      }
+
+      if (dietaryRestrictionsForAPI) {
+        console.log("Aplicando filtros dietéticos:", dietaryRestrictionsForAPI);
+        const recipeStrings = finalRecipes.map((recipe: Recipe) =>
+          JSON.stringify(recipe)
+        );
+        console.log(
+          "Recetas convertidas para filtrado (primeras 2):",
+          recipeStrings.slice(0, 2)
+        );
+
         const filteredResponse = await filterRecipes({
-          recipes: finalRecipes,
-          restrictions,
+          recipes: recipeStrings,
+          dietaryRestrictions: dietaryRestrictionsForAPI,
         });
-        finalRecipes = filteredResponse.recipes || [];
+        console.log("Respuesta filtrada recibida:", filteredResponse);
+
+        // Solución: Mantener todas las propiedades de las recetas originales que pasaron el filtro
+        if (
+          filteredResponse.filteredRecipes &&
+          filteredResponse.filteredRecipes.length > 0
+        ) {
+          // Crear un conjunto con los nombres de las recetas filtradas para búsqueda rápida
+          const filteredNames = new Set(filteredResponse.filteredRecipes);
+
+          // Filtrar las recetas originales completas basándonos en los nombres que pasaron el filtro
+          finalRecipes = finalRecipes.filter((recipe) =>
+            filteredNames.has(recipe.name)
+          );
+
+          console.log("Recetas después de filtrar:", {
+            count: finalRecipes.length,
+            sample: finalRecipes.length > 0 ? finalRecipes[0] : null,
+          });
+        } else {
+          finalRecipes = [];
+        }
       }
 
       setRecipes(finalRecipes);
     } catch (err: any) {
+      console.error("Error en handleSubmit:", err);
       setError(err?.message || "Error al generar recetas");
     } finally {
       setLoading(false);
@@ -45,25 +100,13 @@ export default function Home() {
   };
 
   return (
-    <ScrollView className="flex" showsVerticalScrollIndicator={false}>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 16,
-          boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "white",
-          shadowOffset: { width: 0, height: 2 },
-          shadowColor: "#000",
-          shadowOpacity: 0.1,
-          shadowRadius: 10,
-          borderColor: "gray",
-          borderWidth: 0.5,
-          borderRadius: 16,
-          margin: 16,
-          padding: 16,
-        }}
-      >
+    <ScrollView
+      style={{
+        backgroundColor: theme.colors.backgroundMedium,
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         {recipes.length === 0 && (
           <RecipeForm
             ingredients={ingredients}
@@ -79,49 +122,41 @@ export default function Home() {
           <View
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
+              alignItems: "center",
+              paddingHorizontal: 16,
+              marginVertical: 16,
               justifyContent: "space-between",
+              gap: 16,
             }}
           >
-            <Button
-              buttonStyle={{
-                backgroundColor: "blue",
-                padding: 16,
-                borderRadius: 8,
-                width: recipes.length > 0 ? "48%" : "100%",
+            <Text
+              style={{
+                fontSize: theme.typography.fontSizeTitle,
+                fontWeight: theme.typography.fontWeightBold,
+                color: theme.colors.textPrimary,
               }}
-              textStyle={{
-                color: "white",
-                fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-              title={loading ? "Generando..." : "Regenerar"}
-              onPress={handleSubmit}
-              disabled={loading}
-            />
-            <Button
-              buttonStyle={{
-                backgroundColor: "red",
-                padding: 16,
-                borderRadius: 8,
-                width: "48%",
-              }}
-              textStyle={{
-                color: "white",
-                fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-              title="Borrar recetas"
-              onPress={() => setRecipes([])}
-            />
+            >
+              ¡Aquí tienes tus delicias!
+            </Text>
+            <View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  padding: 16,
+                  borderRadius: 8,
+                }}
+                onPress={() => setRecipes([])}
+              >
+                <Text>Volver a generar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </View>
       {loading && <ActivityIndicator size="large" color="#2563eb" />}
       {error ? (
-        <Text className="text-red-500 mt-4 text-center">{error}</Text>
+        <Text style={{ color: theme.colors.error }}>{error}</Text>
       ) : null}
       {recipes.length > 0 && (
         <View
@@ -130,10 +165,9 @@ export default function Home() {
           {recipes.map((item, index) => (
             <View key={index} style={{ marginBottom: 16 }}>
               <RecipeCard
-                name={item.name || "Receta sin nombre"}
-                instructions={item.instructions || ""}
-                availableIngredientsUsed={item.availableIngredientsUsed || []}
-                ingredientsRequired={item.ingredientsRequired || []}
+                name={item.name}
+                difficulty={item.dificulty || "Desconocida"}
+                time={item.estimatedTime || "Desconocido"}
               />
             </View>
           ))}

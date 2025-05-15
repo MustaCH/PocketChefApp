@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.pocketapp.pocketchef",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -27,10 +28,6 @@
       "bundler": "metro"
     },
     "scheme": "pocketchef",
-    "plugins": [
-      "expo-secure-store",
-      "expo-web-browser",
-      "expo-router"
-    ]
+    "plugins": ["expo-secure-store", "expo-web-browser", "expo-router"]
   }
 }

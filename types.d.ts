@@ -3,4 +3,6 @@ export interface Recipe {
   instructions: string;
   availableIngredientsUsed: string[];
   ingredientsRequired: string[];
+  dificulty?: "easy" | "medium" | "advanced";
+  estimatedTime?: number;
 }
