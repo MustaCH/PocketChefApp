@@ -30,6 +30,17 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null); // Nuevo estado para la receta seleccionada
+
+  const handleShowRecipeModal = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedRecipe(null);
+  };
 
   const handleSubmit = async () => {
     if (ingredients.trim() === "") {
@@ -229,17 +240,19 @@ export default function Home() {
                 imageUrl={item.imageUrl}
                 difficulty={item.dificulty || "Desconocida"}
                 time={item.estimatedTime || "Desconocido"}
-                onPress={() => setShowModal(true)}
-              />
-              <RecipeModal
-                item={item}
-                visible={showModal}
-                showModal={() => setShowModal(false)}
-                closeModal={() => setShowModal(false)}
+                onPress={() => handleShowRecipeModal(item)} // Modificado para pasar la receta
               />
             </View>
           ))}
         </View>
+      )}
+      {selectedRecipe && (
+        <RecipeModal
+          item={selectedRecipe}
+          visible={showModal}
+          showModal={() => setShowModal(true)} // showModal no se usa directamente aquí, pero se mantiene por consistencia si es necesario
+          closeModal={handleCloseModal} // Modificado para usar la nueva función de cierre
+        />
       )}
     </ScrollView>
   );
