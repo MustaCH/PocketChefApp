@@ -1,6 +1,10 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
-import { filterRecipes, generateRecipes } from "../services/api";
+import {
+  filterRecipes,
+  generateRecipes,
+  generateRecipeImageAPI,
+} from "../services/api"; // Importar generateRecipeImageAPI
 import { FontAwesome } from "@expo/vector-icons";
 import { RecipeCard } from "./ui/RecipeCard";
 import { Recipe } from "../types";
@@ -94,7 +98,29 @@ export default function Home() {
         }
       }
 
-      setRecipes(finalRecipes);
+      // Generar imágenes para cada receta
+      const recipesWithImages = await Promise.all(
+        finalRecipes.map(async (recipe) => {
+          try {
+            console.log(`Generando imagen para: ${recipe.name}`);
+            const imageResponse = await generateRecipeImageAPI({
+              recipeName: recipe.name,
+            });
+            console.log(
+              `Imagen generada para ${recipe.name}: ${imageResponse.imageUrl}`
+            );
+            return { ...recipe, imageUrl: imageResponse.imageUrl };
+          } catch (imgErr) {
+            console.error(
+              `Error generando imagen para ${recipe.name}:`,
+              imgErr
+            );
+            return recipe; // Devolver la receta original sin imagen si hay error
+          }
+        })
+      );
+
+      setRecipes(recipesWithImages);
     } catch (err: any) {
       console.error("Error en handleSubmit:", err);
       setError(err?.message || "Error al generar recetas");
@@ -200,6 +226,7 @@ export default function Home() {
             <View key={index} style={{ marginBottom: 16 }}>
               <RecipeCard
                 name={item.name}
+                imageUrl={item.imageUrl}
                 difficulty={item.dificulty || "Desconocida"}
                 time={item.estimatedTime || "Desconocido"}
                 onPress={() => setShowModal(true)}

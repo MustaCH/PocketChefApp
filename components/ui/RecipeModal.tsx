@@ -96,7 +96,11 @@ export const RecipeModal = ({
           </Text>
         </View>
         <Image
-          source={require("../../assets/images/placeholder-recipe.png")}
+          source={
+            item.imageUrl
+              ? { uri: item.imageUrl }
+              : require("../../assets/images/placeholder-recipe.png")
+          }
           style={{
             width: "100%",
             height: 200,

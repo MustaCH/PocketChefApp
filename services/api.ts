@@ -73,3 +73,37 @@ export const filterRecipes = async (data: {
     );
   }
 };
+
+export const generateRecipeImageAPI = async (data: { recipeName: string }) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/generate-recipe-images`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error(
+        "Error response from server (generateRecipeImageAPI):",
+        error.response.data
+      );
+      console.error(
+        "Error status from server (generateRecipeImageAPI):",
+        error.response.status
+      );
+      const errorMessage =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : error.response.data?.message ||
+            JSON.stringify(error.response.data) ||
+            "Error desconocido del servidor.";
+      throw new Error(
+        `Error del servidor (${error.response.status}): ${errorMessage}`
+      );
+    }
+    console.error("Network or other error (generateRecipeImageAPI):", error);
+    throw new Error(
+      "No se pudo generar la imagen de la receta. Problema de red o error inesperado. Por favor, intenta de nuevo."
+    );
+  }
+};

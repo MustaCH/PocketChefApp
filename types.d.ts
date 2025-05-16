@@ -1,8 +1,16 @@
 export interface Recipe {
   name: string;
-  instructions: string;
-  availableIngredientsUsed: string[];
+  dificulty?: string;
+  estimatedTime?: string;
   ingredientsRequired: string[];
-  dificulty?: "easy" | "medium" | "advanced";
-  estimatedTime?: number;
+  instructions: string;
+  imageUrl?: string;
+}
+export interface availableIngredientsUsed {
+  name: string;
+  dificulty?: string;
+  estimatedTime?: string;
+  ingredientsRequired: string[];
+  instructions: string;
+  imageUrl?: string;
 }

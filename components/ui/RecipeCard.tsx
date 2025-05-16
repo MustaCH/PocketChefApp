@@ -10,6 +10,7 @@ import { FontAwesome } from "@expo/vector-icons"; // Assuming you're using Expo 
 
 interface RecipeCardProps {
   name: string;
+  imageUrl: string | undefined;
   difficulty: string; // Added difficulty from the image
   time: string | number; // Added time from the image
   onPress?: () => void;
@@ -19,6 +20,7 @@ export const RecipeCard = ({
   name,
   difficulty,
   time,
+  imageUrl,
   onPress,
 }: RecipeCardProps) => {
   const image = require("../../assets/images/placeholder-recipe.png"); // Fallback image
@@ -38,17 +40,23 @@ export const RecipeCard = ({
   };
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.cardContainer}>
-      <ImageBackground
-        source={image}
-        style={styles.imageBackground}
-        imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}
-      >
-        <View style={styles.overlay}>
-          <Text style={styles.recipeName}>{name}</Text>
-          {/* <Text style={styles.recipeDescription}>{description}</Text> */}
-        </View>
-      </ImageBackground>
+    <View style={styles.cardContainer}>
+      <TouchableOpacity onPress={onPress}>
+        <ImageBackground
+          source={
+            imageUrl
+              ? "https://image.pollinations.ai/prompt/Pan%20de%20queso"
+              : image
+          }
+          style={styles.imageBackground}
+          imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}
+        >
+          <View style={styles.overlay}>
+            <Text style={styles.recipeName}>{name}</Text>
+            {/* <Text style={styles.recipeDescription}>{description}</Text> */}
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
       <View style={styles.detailsContainer}>
         <View style={styles.tagsContainer}>
           <View style={styles.tag}>
@@ -68,7 +76,7 @@ export const RecipeCard = ({
           <Text style={styles.buttonText}>VER RECETA</Text>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
