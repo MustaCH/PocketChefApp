@@ -25,6 +25,8 @@ export const RecipeModal = ({
   showModal,
   closeModal,
 }: RecipeModalProps) => {
+  const image = require("../../assets/images/placeholder-recipe.png"); // Fallback image
+
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
       <View
@@ -77,6 +79,7 @@ export const RecipeModal = ({
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              maxWidth: "20%",
             }}
           >
             <FontAwesome
@@ -90,6 +93,7 @@ export const RecipeModal = ({
               fontSize: theme.typography.fontSizeHeadline,
               fontWeight: theme.typography.fontWeightBold,
               color: theme.colors.textPrimary,
+              maxWidth: "80%",
             }}
           >
             {item.name}

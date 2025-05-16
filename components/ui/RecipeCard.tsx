@@ -43,11 +43,7 @@ export const RecipeCard = ({
     <View style={styles.cardContainer}>
       <TouchableOpacity onPress={onPress}>
         <ImageBackground
-          source={
-            imageUrl
-              ? "https://image.pollinations.ai/prompt/Pan%20de%20queso"
-              : image
-          }
+          source={imageUrl ? { uri: imageUrl } : image}
           style={styles.imageBackground}
           imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}
         >
