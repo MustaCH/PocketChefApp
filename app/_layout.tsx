@@ -1,18 +1,16 @@
 import React from "react";
-import { ClerkProvider } from "@clerk/clerk-expo";
-import { tokenCache } from "@clerk/clerk-expo/token-cache";
-import { Stack } from "expo-router";
-import Constants from "expo-constants";
+import { Stack, Slot } from "expo-router";
+import { AuthProvider } from "../context/AuthContext"; // Ajusta la ruta si es necesario
 
 export default function RootLayout() {
-  const publishableKey =
-    process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-    Constants.expoConfig?.extra?.clerkPublishableKey;
-
-  if (!publishableKey) {
-    console.error("Missing Clerk publishable key");
-    return null;
-  }
-
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        {/* Puedes añadir una pantalla de carga inicial aquí si es necesario */}
+        {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+      </Stack>
+    </AuthProvider>
+  );
 }

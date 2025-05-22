@@ -1,29 +1,24 @@
 import React from "react";
 import { Stack } from "expo-router";
 import Isotype from "../../components/logos/Isotype";
+import { SignOutButton } from "../../components/ui/SignOutButton"; // Ajusta la ruta si es necesario
+import theme from "../../styles/theme"; // Ajusta la ruta si es necesario
 
 export default function HomeLayout() {
-  // const { isLoaded, isSignedIn } = useAuth();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (isLoaded && !isSignedIn) {
-  //     router.replace("/(auth)/sign_in");
-  //   }
-  // }, [isLoaded, isSignedIn, router]);
-
-  // if (!isLoaded) return null;
-  // if (!isSignedIn) return null;
-
   return (
     <Stack
       screenOptions={{
         headerLeft: () => <Isotype />,
         headerTitle: "",
         headerStyle: {
-          backgroundColor: "#1E2A38",
+          backgroundColor: theme.colors.backgroundDark, // Usar color del tema
         },
+        headerTintColor: theme.colors.textPrimary, // Color para el título y botones del header
+        headerRight: () => <SignOutButton />,
       }}
-    />
+    >
+      <Stack.Screen name="index" options={{ title: "Inicio" }} />
+      {/* Aquí puedes añadir más pantallas dentro del grupo (home) si es necesario */}
+    </Stack>
   );
 }

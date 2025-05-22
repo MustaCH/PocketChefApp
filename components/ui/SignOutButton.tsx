@@ -1,25 +1,49 @@
 import React from "react";
-import { useClerk } from "@clerk/clerk-expo";
-import * as Linking from "expo-linking";
-import { Text, TouchableOpacity } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { useAuth } from "../../context/AuthContext"; // Ajusta la ruta si es necesario
+import theme from "../../styles/theme"; // Ajusta la ruta si es necesario
 
 export const SignOutButton = () => {
-  // Use `useClerk()` to access the `signOut()` function
-  const { signOut } = useClerk();
+  const { logout, isLoading } = useAuth();
+
   const handleSignOut = async () => {
-    try {
-      await signOut();
-      // Redirect to your desired page
-      Linking.openURL(Linking.createURL("/"));
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-    }
+    await logout();
+    // La navegación se maneja dentro del método logout del AuthContext
   };
+
   return (
-    <TouchableOpacity onPress={handleSignOut}>
-      <Text>Sign out</Text>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={handleSignOut}
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <ActivityIndicator color={theme.colors.textPrimary} />
+      ) : (
+        <Text style={styles.buttonText}>Cerrar Sesión</Text>
+      )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: theme.colors.accent, // O un color que prefieras para logout
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    borderRadius: theme.borderRadius.md,
+    alignItems: "center",
+    justifyContent: "center",
+    minWidth: 120, // Para darle un tamaño mínimo
+  },
+  buttonText: {
+    color: theme.colors.textPrimary,
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: theme.typography.fontSizeBody,
+  },
+});
