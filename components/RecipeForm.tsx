@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import theme from "../styles/theme";
@@ -173,21 +174,23 @@ export function RecipeForm({
           </View>
         </View>
       </View> */}
-      <TouchableOpacity
-        style={styles.submitButton}
-        onPress={onSubmit}
-        disabled={loading}
-      >
-        <FontAwesome
-          name="magic"
-          size={20}
-          color="white"
-          style={{ marginRight: 10 }}
-        />
-        <Text style={styles.submitButtonText}>
-          {loading ? "CREANDO..." : "¡CREAR MIS RECETAS!"}
-        </Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      ) : (
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={onSubmit}
+          disabled={loading}
+        >
+          <FontAwesome
+            name="magic"
+            size={20}
+            color="white"
+            style={{ marginRight: 10 }}
+          />
+          <Text style={styles.submitButtonText}>"CREAR"</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

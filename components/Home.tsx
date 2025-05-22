@@ -225,7 +225,6 @@ export default function Home() {
           </View>
         )}
       </View>
-      {loading && <ActivityIndicator size="large" color="#2563eb" />}
       {error ? (
         <Text style={{ color: theme.colors.error }}>{error}</Text>
       ) : null}
