@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -25,7 +25,16 @@ export const RecipeModal = ({
   showModal,
   closeModal,
 }: RecipeModalProps) => {
+  const [savedRecipe, setSavedRecipe] = useState(false); // State to track if the recipe is saved
   const image = require("../../assets/images/placeholder-recipe.png"); // Fallback image
+
+  const handleSaveRecipe = () => {
+    if (savedRecipe) {
+      setSavedRecipe(false); // Set the recipe as saved
+    } else {
+      setSavedRecipe(true); // Set the recipe as unsaved
+    }
+  };
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
@@ -74,7 +83,7 @@ export const RecipeModal = ({
           }}
         >
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={handleSaveRecipe}
             style={{
               display: "flex",
               flexDirection: "row",
@@ -83,7 +92,7 @@ export const RecipeModal = ({
             }}
           >
             <FontAwesome
-              name="heart-o"
+              name={savedRecipe ? "heart" : "heart-o"}
               size={30}
               color={theme.colors.primary}
             />
@@ -113,7 +122,14 @@ export const RecipeModal = ({
             marginVertical: theme.spacing.md,
           }}
         />
-        <View style={{ display: "flex", flexDirection: "row", gap: 16 }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            paddingBottom: 16,
+            gap: 16,
+          }}
+        >
           <Text
             style={{
               fontSize: theme.typography.fontSizeSubtext,

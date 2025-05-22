@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Assuming you're using Expo for icons
+import theme from "../../styles/theme";
 
 interface RecipeCardProps {
   name: string;
@@ -23,24 +24,39 @@ export const RecipeCard = ({
   imageUrl,
   onPress,
 }: RecipeCardProps) => {
+  const [savedRecipe, setSavedRecipe] = useState(false); // State to track if the recipe is saved
   const image = require("../../assets/images/placeholder-recipe.png"); // Fallback image
 
-  // Map difficulty to a color
-  const difficultyColor = {
-    Fácil: "#2ECC71", // Green for Easy
-    Moderado: "#F39C12", // Orange for Moderate
-    Difícil: "#E74C3C", // Red for Difficult
-  }[difficulty];
-
-  const timeColor = {
-    "15 min": "#3498DB", // Blue for 15 min
-    "30 min": "#2ECC71", // Green for 30 min
-    "45 min": "#F39C12", // Orange for 45 min
-    "60 min": "#E74C3C", // Red for 60 min
+  const handleSaveRecipe = () => {
+    if (savedRecipe) {
+      setSavedRecipe(false); // Set the recipe as saved
+    } else {
+      setSavedRecipe(true); // Set the recipe as unsaved
+    }
   };
 
   return (
     <View style={styles.cardContainer}>
+      <TouchableOpacity
+        onPress={handleSaveRecipe}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          maxWidth: "20%",
+          position: "absolute",
+          top: 5,
+          right: 10,
+          padding: 8,
+          zIndex: 1,
+        }}
+      >
+        <FontAwesome
+          name={savedRecipe ? "heart" : "heart-o"}
+          size={30}
+          color={theme.colors.primary}
+        />
+      </TouchableOpacity>
       <TouchableOpacity onPress={onPress}>
         <ImageBackground
           source={imageUrl ? { uri: imageUrl } : image}
@@ -69,6 +85,11 @@ export const RecipeCard = ({
           </Text> */}
         </View>
         <TouchableOpacity style={styles.button} onPress={onPress}>
+          <FontAwesome
+            name={"eye"}
+            size={20}
+            color={theme.colors.textPrimary}
+          />
           <Text style={styles.buttonText}>VER RECETA</Text>
         </TouchableOpacity>
       </View>
@@ -87,6 +108,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    position: "relative",
   },
   imageBackground: {
     width: "100%",
@@ -138,6 +160,9 @@ const styles = StyleSheet.create({
     color: "#F1C40F", // Gold color for rating text
   },
   button: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
     backgroundColor: "#E67E22", // Orange button
     paddingVertical: 12,
     borderRadius: 8,
