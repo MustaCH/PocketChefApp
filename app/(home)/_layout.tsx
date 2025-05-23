@@ -1,24 +1,71 @@
 import React from "react";
-import { Stack } from "expo-router";
-import Isotype from "../../components/logos/Isotype";
-import { SignOutButton } from "../../components/ui/SignOutButton"; // Ajusta la ruta si es necesario
-import theme from "../../styles/theme"; // Ajusta la ruta si es necesario
+import { Tabs } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
+import theme from "../../styles/theme";
 
 export default function HomeLayout() {
   return (
-    <Stack
+    <Tabs
       screenOptions={{
-        headerLeft: () => <Isotype />,
-        headerTitle: "",
-        headerStyle: {
-          backgroundColor: theme.colors.backgroundDark, // Usar color del tema
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: theme.colors.backgroundDark,
+          borderTopColor: theme.colors.backgroundDark,
+          margin: 12,
+          borderRadius: 30,
+          shadowColor: "black",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
         },
-        headerTintColor: theme.colors.textPrimary, // Color para el título y botones del header
-        headerRight: () => <SignOutButton />,
+        headerStyle: {
+          backgroundColor: theme.colors.backgroundDark,
+        },
+        headerTintColor: theme.colors.textPrimary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Inicio" }} />
-      {/* Aquí puedes añadir más pantallas dentro del grupo (home) si es necesario */}
-    </Stack>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="leaf" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="screens/RecipesScreen"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="cutlery" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="screens/EventsScreen"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="glass" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="screens/ProfileScreen"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
