@@ -46,7 +46,6 @@ export const RecipeModal = ({
           backgroundColor: theme.colors.backgroundMedium,
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
-          marginTop: theme.spacing.lg,
         }}
       >
         <View
@@ -59,7 +58,7 @@ export const RecipeModal = ({
             paddingTop: 55,
             paddingBottom: theme.spacing.md,
             paddingHorizontal: theme.spacing.md,
-            backgroundColor: theme.colors.secondary,
+            backgroundColor: theme.colors.primary,
             position: "relative",
           }}
         >
