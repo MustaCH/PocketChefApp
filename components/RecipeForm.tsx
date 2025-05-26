@@ -82,7 +82,7 @@ export function RecipeForm({
 
   return (
     <View style={styles.formContainer}>
-      <Text style={styles.title}>¿Qué ingredientes tienes hoy?</Text>
+      <Text style={styles.title}>¿Qué tienes hoy en tu cocina?</Text>
       <View>
         <Text style={styles.label}>Ingredientes Principales</Text>
         <Text style={styles.subtitle}>
@@ -188,7 +188,7 @@ export function RecipeForm({
             color="white"
             style={{ marginRight: 10 }}
           />
-          <Text style={styles.submitButtonText}>"CREAR"</Text>
+          <Text style={styles.submitButtonText}>CREAR</Text>
         </TouchableOpacity>
       )}
     </View>

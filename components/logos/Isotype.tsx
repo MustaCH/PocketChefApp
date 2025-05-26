@@ -4,7 +4,7 @@ import theme from "../../styles/theme";
 
 export default function Isotype() {
   return (
-    <View style={{ display: "flex", flexDirection: "row" }}>
+    <View style={{ display: "flex", flexDirection: "row", marginLeft: 16 }}>
       <Text
         style={{
           fontWeight: theme.typography.fontWeightBold,
