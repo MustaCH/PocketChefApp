@@ -10,10 +10,10 @@ export default function HomeLayout() {
     <Tabs
       screenOptions={{
         headerShown: true,
-        headerTitle: "",
-        headerLeft: () => (
+        headerTitleAlign: "center",
+        headerTitle: () => (
           <Image
-            style={{ height: 40, width: 40 }}
+            style={{ height: 36, width: 40 }}
             source={require("../../assets/icon.png")}
           />
         ),
