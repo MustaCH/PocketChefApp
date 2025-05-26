@@ -7,10 +7,12 @@ import {
   Button,
   ActivityIndicator,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import theme from "../../../styles/theme"; // Ajusta la ruta según tu estructura
 import { getSpecificRecipe } from "../../../services/api"; // Ajusta la ruta según tu estructura
 import { RecipeCard } from "../../../components/ui/RecipeCard"; // Ajusta la ruta según tu estructur
+import { FontAwesome } from "@expo/vector-icons"; // Ajusta la ruta según tu estructura
 
 export default function Page() {
   const [recipeName, setRecipeName] = useState("");
@@ -28,7 +30,7 @@ export default function Page() {
     setRecipe(null);
     try {
       const result = await getSpecificRecipe({ recipeName });
-      setRecipe(result.recipe); // Asumiendo que la respuesta tiene una propiedad 'recipe'
+      setRecipe(result); // La API devuelve directamente el objeto de la receta
     } catch (err: any) {
       setError(err.message || "Ocurrió un error al buscar la receta.");
     }
@@ -40,19 +42,27 @@ export default function Page() {
       style={styles.scrollViewContainer}
       contentContainerStyle={styles.container}
     >
-      <Text style={styles.title}>Buscar Receta Específica</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre de la receta"
-        value={recipeName}
-        onChangeText={setRecipeName}
-        placeholderTextColor={theme.colors.textSecondary}
-      />
-      <Button
-        title="Buscar Receta"
-        onPress={handleSearchRecipe}
-        color={theme.colors.primary}
-      />
+      <Text style={styles.title}>¿Que receta buscas hoy?</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 10,
+        }}
+      >
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre de la receta"
+          value={recipeName}
+          onChangeText={setRecipeName}
+          placeholderTextColor={theme.colors.textSecondary}
+          clearButtonMode="always"
+        />
+        <TouchableOpacity onPress={handleSearchRecipe}>
+          <FontAwesome name="search" size={30} color={theme.colors.primary} />
+        </TouchableOpacity>
+      </View>
 
       {loading && (
         <ActivityIndicator
@@ -64,18 +74,15 @@ export default function Page() {
       {error && <Text style={styles.errorText}>{error}</Text>}
 
       {recipe && (
-        <View style={styles.recipeContainer}>
-          <Text style={styles.recipeTitle}>Receta Encontrada:</Text>
-          {/* Asumiendo que RecipeCard puede manejar el formato de 'recipe' */}
-          {/* Si 'recipe' es un string de la receta, necesitarás parsearlo o mostrarlo directamente */}
+        <View style={{ width: "100%", marginTop: theme.spacing.lg }}>
           {typeof recipe === "string" ? (
             <Text style={styles.recipeText}>{recipe}</Text>
           ) : (
             <RecipeCard
               name={recipe.name || recipeName}
               imageUrl={recipe.imageUrl || undefined} // O una imagen placeholder
-              difficulty={recipe.difficulty || "Desconocida"} // Valor predeterminado
-              time={recipe.time || "N/A"} // Valor predeterminado
+              difficulty={recipe.difficulty} // Valor predeterminado
+              time={recipe.time} // Valor predeterminado
               onPress={() => {
                 /* Lógica al presionar la tarjeta si es necesario */
               }}
@@ -111,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizeTitle,
     fontWeight: theme.typography.fontWeightBold,
     color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.md,
+    marginVertical: theme.spacing.lg,
   },
   text: {
     fontSize: theme.typography.fontSizeBody,
@@ -124,7 +131,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     borderWidth: 1,
     borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.lg,
     paddingHorizontal: theme.spacing.md,
     fontSize: theme.typography.fontSizeBody,
     backgroundColor: theme.colors.backgroundLight,
@@ -139,14 +145,6 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizeBody,
     marginTop: theme.spacing.md,
     textAlign: "center",
-  },
-  recipeContainer: {
-    marginTop: theme.spacing.lg,
-    padding: theme.spacing.md,
-    backgroundColor: theme.colors.backgroundLight,
-    borderRadius: theme.borderRadius.md,
-    width: "90%", // Ocupa el 90% del ancho
-    alignItems: "center",
   },
   recipeTitle: {
     fontSize: theme.typography.fontSizeCaption,

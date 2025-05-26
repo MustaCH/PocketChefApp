@@ -44,34 +44,11 @@ export const RecipeModal = ({
           alignItems: "center",
           flex: 1,
           backgroundColor: theme.colors.backgroundMedium,
-          borderRadius: 16,
-          marginVertical: theme.spacing.lg,
-          marginHorizontal: theme.spacing.lg,
-          padding: theme.spacing.md,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          marginTop: theme.spacing.lg,
         }}
       >
-        <TouchableOpacity
-          onPress={closeModal}
-          style={{
-            alignSelf: "flex-end",
-            padding: theme.spacing.sm,
-          }}
-        >
-          <FontAwesome
-            name="times"
-            size={20}
-            color="white"
-            style={{ position: "absolute", top: 0, right: 0 }}
-          />
-        </TouchableOpacity>
         <View
           style={{
             display: "flex",
@@ -79,9 +56,31 @@ export const RecipeModal = ({
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            marginVertical: theme.spacing.md,
+            paddingTop: 55,
+            paddingBottom: theme.spacing.md,
+            paddingHorizontal: theme.spacing.md,
+            backgroundColor: theme.colors.primary,
+            position: "relative",
           }}
         >
+          <TouchableOpacity
+            onPress={closeModal}
+            style={{
+              alignSelf: "flex-end",
+              padding: theme.spacing.sm,
+              position: "absolute",
+              top: 10,
+              right: 20,
+              zIndex: 1, // Asegura que el botón esté por encima del contenid
+            }}
+          >
+            <FontAwesome
+              name="close"
+              size={30}
+              color={theme.colors.white}
+              style={{ position: "absolute", top: 0, right: 0 }}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={handleSaveRecipe}
             style={{
@@ -94,7 +93,7 @@ export const RecipeModal = ({
             <FontAwesome
               name={savedRecipe ? "heart" : "heart-o"}
               size={30}
-              color={theme.colors.primary}
+              color={theme.colors.white}
             />
           </TouchableOpacity>
           <Text
@@ -108,66 +107,72 @@ export const RecipeModal = ({
             {item.name}
           </Text>
         </View>
-        <Image
-          source={
-            item.imageUrl
-              ? { uri: item.imageUrl }
-              : require("../../assets/images/placeholder-recipe.png")
-          }
-          style={{
-            width: "100%",
-            height: 200,
-            resizeMode: "cover",
-            borderRadius: 8,
-            marginVertical: theme.spacing.md,
-          }}
-        />
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            paddingBottom: 16,
-            gap: 16,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: theme.typography.fontSizeSubtext,
-              fontWeight: theme.typography.fontWeightSemiBold,
-              color: theme.colors.textSecondary,
-            }}
-          >
-            Tiempo estimado:{" "}
-            <Text style={{ color: theme.colors.accent }}>
-              {item.estimatedTime}
-            </Text>{" "}
-            minutos
-          </Text>
-          <Text
-            style={{
-              fontSize: theme.typography.fontSizeSubtext,
-              fontWeight: theme.typography.fontWeightSemiBold,
-              color: theme.colors.textSecondary,
-            }}
-          >
-            Dificultad: {item.dificulty}
-          </Text>
-        </View>
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{
-            padding: theme.spacing.md,
             display: "flex",
             flexDirection: "column",
             gap: theme.spacing.md,
           }}
         >
-          <View style={{ width: "100%", marginBottom: theme.spacing.md }}>
+          <Image
+            source={
+              item.imageUrl
+                ? { uri: item.imageUrl }
+                : require("../../assets/images/placeholder-recipe.png")
+            }
+            style={{
+              width: "100%",
+              height: 200,
+              resizeMode: "cover",
+              marginBottom: theme.spacing.md,
+            }}
+          />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              paddingBottom: theme.spacing.md,
+              paddingHorizontal: theme.spacing.md,
+              gap: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: theme.typography.fontSizeSubtext,
+                fontWeight: theme.typography.fontWeightSemiBold,
+                color: theme.colors.textSecondary,
+              }}
+            >
+              Tiempo estimado:{" "}
+              <Text style={{ color: theme.colors.accent }}>
+                {item.estimatedTime}
+              </Text>{" "}
+              minutos
+            </Text>
+            <Text
+              style={{
+                fontSize: theme.typography.fontSizeSubtext,
+                fontWeight: theme.typography.fontWeightSemiBold,
+                color: theme.colors.textSecondary,
+              }}
+            >
+              Dificultad: {item.dificulty}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              marginBottom: theme.spacing.md,
+              paddingHorizontal: theme.spacing.md,
+            }}
+          >
             <Text
               style={{
                 fontSize: theme.typography.fontSizeHeadline,
                 fontWeight: theme.typography.fontWeightSemiBold,
-                color: theme.colors.textSecondary,
+                color: theme.colors.black,
                 marginBottom: theme.spacing.md,
               }}
             >
@@ -177,7 +182,13 @@ export const RecipeModal = ({
               return <IngredientListItem key={index} ingredient={ingredient} />;
             })}
           </View>
-          <View style={{ flexDirection: "column", gap: theme.spacing.md }}>
+          <View
+            style={{
+              flexDirection: "column",
+              gap: theme.spacing.md,
+              paddingHorizontal: theme.spacing.md,
+            }}
+          >
             <Text
               style={{
                 fontSize: theme.typography.fontSizeHeadline,
@@ -240,7 +251,7 @@ export const RecipeModal = ({
               <Text
                 style={{
                   fontWeight: theme.typography.fontWeightBold,
-                  color: theme.colors.textPrimary,
+                  color: theme.colors.white,
                 }}
               >
                 Marcar cómo cocinado

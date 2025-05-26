@@ -190,13 +190,17 @@ export default function Home() {
               }}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: theme.colors.primary,
+                }}
               >
                 Recetas generadas: {recipes.length}
               </Text>
               <TouchableOpacity
                 style={{
-                  backgroundColor: "transparent",
+                  backgroundColor: theme.colors.primary,
                   borderWidth: 1,
                   borderColor: theme.colors.primary,
                   padding: 12,
@@ -212,11 +216,15 @@ export default function Home() {
                 <FontAwesome
                   name="refresh"
                   size={20}
-                  color="white"
+                  color={theme.colors.white}
                   style={{ marginRight: 10 }}
                 />
                 <Text
-                  style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: theme.colors.white,
+                  }}
                 >
                   Volver a generar
                 </Text>

@@ -14,7 +14,7 @@ export default function HomeLayout() {
         headerTitle: () => (
           <Image
             style={{ height: 36, width: 40 }}
-            source={require("../../assets/icon.png")}
+            source={require("../../assets/icon-white.png")}
           />
         ),
         tabBarShowLabel: false,
@@ -33,7 +33,7 @@ export default function HomeLayout() {
           shadowRadius: 4,
         },
         headerStyle: {
-          backgroundColor: theme.colors.backgroundDark,
+          backgroundColor: theme.colors.primary,
         },
         headerTintColor: theme.colors.textPrimary,
         headerTitleStyle: {
