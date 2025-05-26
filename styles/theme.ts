@@ -1,18 +1,17 @@
 export const colors = {
-  primary: "#E67E22", // Orange
-  backgroundDark: "#1E2A38", // Darkest blue-gray (form container)
-  backgroundMedium: "#2C3E50", // Medium blue-gray (input, card container)
-  backgroundLight: "#34495E", // Lighter blue-gray (card details, restriction buttons)
-  textPrimary: "#FFFFFF", // White
-  textSecondary: "#ECF0F1", // Light gray
-  textTertiary: "#BDC3C7", // Lighter gray (subtitles, placeholder)
-  textPlaceholder: "#7F8C8D",
-  accent: "#FFD700", // Gold/Yellow for ratings
-  tagBackground: "#4A6572",
+  primary: "#ED8C29", // Orange (from image button, kept existing)
+  backgroundDark: "#F4F4F4", // Very light gray for subtle background variations
+  backgroundMedium: "#FFFFFF", // White (main content, cards, matching image)
+  backgroundLight: "#EAEAEA", // Slightly off-white for subtle distinctions if needed
+  textPrimary: "#212121", // Very dark gray/almost black (for text on white background)
+  textSecondary: "#555555", // Dark gray (for secondary text)
+  textTertiary: "#757575", // Medium gray (subtitles)
+  textPlaceholder: "#A0A0A0", // Lighter gray (placeholders)
+  accent: "#60A5A5", // Muted teal (from image chef background)
   white: "#FFFFFF",
   black: "#000000",
-  lightGray: "#e0e0e0", // For borders or subtle elements if needed
-  error: "#E74C3C", // Red for errors
+  lightGray: "#D3D3D3", // Standard light gray for borders/dividers
+  error: "#E74C3C", // Red for errors (kept existing)
 };
 
 export const typography = {

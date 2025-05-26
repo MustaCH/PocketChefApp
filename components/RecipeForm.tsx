@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.sm,
   },
   restrictionButtonSelected: {
-    backgroundColor: theme.colors.tagBackground,
+    backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
     borderWidth: 1,
   },
