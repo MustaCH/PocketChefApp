@@ -59,7 +59,7 @@ export const RecipeModal = ({
             paddingTop: 55,
             paddingBottom: theme.spacing.md,
             paddingHorizontal: theme.spacing.md,
-            backgroundColor: theme.colors.primary,
+            backgroundColor: theme.colors.secondary,
             position: "relative",
           }}
         >

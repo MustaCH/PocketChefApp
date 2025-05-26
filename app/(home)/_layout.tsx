@@ -2,8 +2,8 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import theme from "../../styles/theme";
-import Isotype from "../../components/logos/Isotype";
 import { Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeLayout() {
   return (
@@ -13,8 +13,25 @@ export default function HomeLayout() {
         headerTitleAlign: "center",
         headerTitle: () => (
           <Image
-            style={{ height: 36, width: 40 }}
+            style={{ height: 36, width: 40, marginBottom: 10 }}
             source={require("../../assets/icon-white.png")}
+          />
+        ),
+        headerBackground: () => (
+          <LinearGradient
+            colors={[
+              theme.colors.primary,
+              theme.colors.secondary,
+              theme.colors.primary,
+            ]} // Ajusta estos colores según tu diseño
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 16,
+            }}
           />
         ),
         tabBarShowLabel: false,
@@ -33,9 +50,9 @@ export default function HomeLayout() {
           shadowRadius: 4,
         },
         headerStyle: {
-          backgroundColor: theme.colors.primary,
+          backgroundColor: "transparent", // Esencial para que el gradiente en headerBackground sea visible
         },
-        headerTintColor: theme.colors.textPrimary,
+        headerTintColor: theme.colors.textPrimary, // Color del título y botones del header
         headerTitleStyle: {
           fontWeight: "bold",
         },

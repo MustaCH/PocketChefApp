@@ -1,5 +1,6 @@
 export const colors = {
-  primary: "#ED8C29", // Orange (from image button, kept existing)
+  primary: "#ED8C29",
+  secondary: "#F45014", // Orange (from image button, kept existing)
   backgroundDark: "#F4F4F4", // Very light gray for subtle background variations
   backgroundMedium: "#FFFFFF", // White (main content, cards, matching image)
   backgroundLight: "#EAEAEA", // Slightly off-white for subtle distinctions if needed

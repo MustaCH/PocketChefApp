@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import theme from "../styles/theme";
 
 interface RecipeFormProps {
@@ -182,13 +183,24 @@ export function RecipeForm({
           onPress={onSubmit}
           disabled={loading}
         >
-          <FontAwesome
-            name="magic"
-            size={20}
-            color={theme.colors.black}
-            style={{ marginRight: 10 }}
-          />
-          <Text style={styles.submitButtonText}>CREAR</Text>
+          <LinearGradient
+            colors={[
+              theme.colors.secondary,
+              theme.colors.primary,
+              theme.colors.secondary,
+            ]}
+            start={{ x: 1, y: 2 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradientButton}
+          >
+            <FontAwesome
+              name="magic"
+              size={20}
+              color={theme.colors.white}
+              style={{ marginRight: 10 }}
+            />
+            <Text style={styles.submitButtonText}>CREAR</Text>
+          </LinearGradient>
         </TouchableOpacity>
       )}
     </View>
@@ -236,14 +248,14 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
   },
   addButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.secondary,
     paddingVertical: theme.spacing.md - 4, // 12
     paddingHorizontal: theme.spacing.lg - 4, // 20
     borderTopRightRadius: theme.borderRadius.sm,
     borderBottomRightRadius: theme.borderRadius.sm,
   },
   addButtonText: {
-    color: theme.colors.textPrimary,
+    color: theme.colors.white,
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.fontSizeBody,
   },
@@ -287,16 +299,16 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.sm,
   },
   restrictionButtonSelected: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.secondary,
     borderColor: theme.colors.primary,
-    borderWidth: 1,
+    borderWidth: 2,
   },
   restrictionButtonText: {
     color: theme.colors.textTertiary,
     fontSize: theme.typography.fontSizeSubtext,
   },
   restrictionButtonTextSelected: {
-    color: theme.colors.textPrimary,
+    color: theme.colors.white,
     fontWeight: theme.typography.fontWeightBold,
   },
   rowContainer: {
@@ -322,15 +334,25 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizeBody,
   },
   submitButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: "transparent",
     paddingVertical: theme.spacing.md,
     borderRadius: theme.borderRadius.sm,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  gradientButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: "100%", // Debe coincidir con submitButton
   },
   submitButtonText: {
-    color: theme.colors.textPrimary,
+    color: theme.colors.white,
     fontSize: theme.typography.fontSizeBody + 2, // 18
     fontWeight: theme.typography.fontWeightBold,
   },
