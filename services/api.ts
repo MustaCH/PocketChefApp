@@ -30,6 +30,41 @@ export const generateRecipes = async (data: { ingredients: string }) => {
   }
 };
 
+export const getSpecificRecipe = async (data: { recipeName: string }) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/get-specific-recipe`,
+      data
+    );
+    console.log(response.data); // Log the response data to the terminal
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error(
+        "Error response from server (getSpecificRecipe):",
+        error.response.data
+      );
+      console.error(
+        "Error status from server (getSpecificRecipe):",
+        error.response.status
+      );
+      const errorMessage =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : error.response.data?.message ||
+            JSON.stringify(error.response.data) ||
+            "Error desconocido del servidor.";
+      throw new Error(
+        `Error del servidor (${error.response.status}): ${errorMessage}`
+      );
+    }
+    console.error("Network or other error (getSpecificRecipe):", error);
+    throw new Error(
+      "No se pudo obtener la receta específica. Problema de red o error inesperado. Por favor, intenta de nuevo."
+    );
+  }
+};
+
 export const filterRecipes = async (data: {
   recipes: string[];
   dietaryRestrictions: string;
