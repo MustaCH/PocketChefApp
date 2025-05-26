@@ -185,7 +185,7 @@ export function RecipeForm({
           <FontAwesome
             name="magic"
             size={20}
-            color="white"
+            color={theme.colors.black}
             style={{ marginRight: 10 }}
           />
           <Text style={styles.submitButtonText}>CREAR</Text>

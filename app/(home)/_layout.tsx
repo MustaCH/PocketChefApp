@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import theme from "../../styles/theme";
 import Isotype from "../../components/logos/Isotype";
+import { Image } from "react-native";
 
 export default function HomeLayout() {
   return (
@@ -10,7 +11,12 @@ export default function HomeLayout() {
       screenOptions={{
         headerShown: true,
         headerTitle: "",
-        headerLeft: () => <Isotype />,
+        headerLeft: () => (
+          <Image
+            style={{ height: 40, width: 40 }}
+            source={require("../../assets/icon.png")}
+          />
+        ),
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: theme.colors.primary,
