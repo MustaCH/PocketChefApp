@@ -48,7 +48,7 @@ export default function Page() {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          gap: 10,
+          gap: 0,
         }}
       >
         <TextInput
@@ -59,8 +59,22 @@ export default function Page() {
           placeholderTextColor={theme.colors.textSecondary}
           clearButtonMode="always"
         />
-        <TouchableOpacity onPress={handleSearchRecipe}>
-          <FontAwesome name="search" size={30} color={theme.colors.primary} />
+        <TouchableOpacity
+          onPress={handleSearchRecipe}
+          style={{
+            backgroundColor: theme.colors.secondary,
+            borderTopRightRadius: theme.borderRadius.md,
+            borderBottomRightRadius: theme.borderRadius.md,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: theme.spacing.md,
+            height: 50,
+          }}
+        >
+          <Text style={{ color: theme.colors.white, fontWeight: "bold" }}>
+            Buscar
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -94,9 +108,7 @@ export default function Page() {
         <Text style={styles.text}>Intenta buscar una receta.</Text>
       )}
       {!loading && !recipe && !error && recipeName === "" && (
-        <Text style={styles.text}>
-          Ingresa el nombre de una receta para comenzar.
-        </Text>
+        <Text style={styles.text}>Ingresa el nombre de una receta</Text>
       )}
     </ScrollView>
   );
@@ -128,14 +140,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: theme.colors.primary,
+    borderColor: theme.colors.secondary,
     borderWidth: 1,
-    borderRadius: theme.borderRadius.md,
+    borderTopLeftRadius: theme.borderRadius.md,
+    borderBottomLeftRadius: theme.borderRadius.md,
     paddingHorizontal: theme.spacing.md,
     fontSize: theme.typography.fontSizeBody,
     backgroundColor: theme.colors.backgroundLight,
     color: theme.colors.textPrimary,
-    width: "90%", // Ocupa el 90% del ancho
+    width: "80%", // Ocupa el 90% del ancho
   },
   loader: {
     marginTop: theme.spacing.lg,

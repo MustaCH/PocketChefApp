@@ -4,6 +4,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import theme from "../../styles/theme";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { CreateRecipeIcon } from "../../components/icons/CreateRecipeIcon";
+import { EventRecipeIcon } from "../../components/icons/EventRecipeIcon";
 
 export default function HomeLayout() {
   return (
@@ -23,7 +25,7 @@ export default function HomeLayout() {
               theme.colors.primary,
               theme.colors.secondary,
               theme.colors.primary,
-            ]} // Ajusta estos colores según tu diseño
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={{
@@ -34,15 +36,13 @@ export default function HomeLayout() {
             }}
           />
         ),
-        tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: theme.colors.primary,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: theme.colors.secondary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarStyle: {
           backgroundColor: theme.colors.backgroundDark,
           borderTopColor: theme.colors.backgroundDark,
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
           borderTopWidth: 0,
           shadowColor: "black",
           shadowOffset: { width: 0, height: 2 },
@@ -50,29 +50,29 @@ export default function HomeLayout() {
           shadowRadius: 4,
         },
         headerStyle: {
-          backgroundColor: "transparent", // Esencial para que el gradiente en headerBackground sea visible
+          backgroundColor: "transparent",
         },
-        headerTintColor: theme.colors.textPrimary, // Color del título y botones del header
+        headerTintColor: theme.colors.textPrimary,
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        // Mantener el título vacío o ajustarlo si es necesario, ya que el logo ocupa espacio
-        // headerTitle: "", // Opcional: si quieres quitar el título por completo
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
+          title: "Crear",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="leaf" size={size} color={color} />
+            <CreateRecipeIcon filled={true} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="screens/RecipesScreen"
         options={{
+          title: "Buscar",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="cutlery" size={size} color={color} />
+            <FontAwesome name="search" size={size} color={color} />
           ),
         }}
       />
@@ -80,14 +80,14 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="screens/EventsScreen"
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="glass" size={size} color={color} />
-          ),
+          title: "Eventos",
+          tabBarIcon: ({ color, size }) => <EventRecipeIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="screens/ProfileScreen"
         options={{
+          title: "Perfil",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" size={size} color={color} />
           ),

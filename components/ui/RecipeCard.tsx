@@ -137,15 +137,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   tag: {
-    backgroundColor: theme.colors.primary, // Darker tag background
+    backgroundColor: "transparent", // Darker tag background
     borderRadius: 15,
+    borderWidth: 1.5,
+    borderColor: theme.colors.primary, // Darker tag border
     paddingVertical: 6,
     paddingHorizontal: 12,
     marginRight: 8,
   },
   tagText: {
-    color: "white",
+    color: theme.colors.secondary, // Darker tag text color,
     fontSize: 12,
+    fontWeight: "bold",
   },
   ratingContainer: {
     flexDirection: "row",
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
-    backgroundColor: "#E67E22", // Orange button
+    backgroundColor: theme.colors.secondary, // Orange button
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",

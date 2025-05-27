@@ -193,14 +193,14 @@ export default function Home() {
                 style={{
                   fontSize: 16,
                   fontWeight: "bold",
-                  color: theme.colors.primary,
+                  color: theme.colors.secondary,
                 }}
               >
                 Recetas generadas: {recipes.length}
               </Text>
               <TouchableOpacity
                 style={{
-                  backgroundColor: theme.colors.primary,
+                  backgroundColor: theme.colors.secondary,
                   borderWidth: 1,
                   borderColor: theme.colors.primary,
                   padding: 12,
