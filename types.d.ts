@@ -14,3 +14,10 @@ export interface availableIngredientsUsed {
   instructions: string;
   imageUrl?: string;
 }
+
+export interface EventRecipesInput {
+  eventType: string;
+  numberOfGuests: number;
+  mealType: string;
+  dietaryRestrictions?: string[];
+}

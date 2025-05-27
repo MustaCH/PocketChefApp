@@ -12,8 +12,8 @@ import theme from "../../styles/theme";
 interface RecipeCardProps {
   name: string;
   imageUrl: string | undefined;
-  difficulty: string; // Added difficulty from the image
-  time: string | number; // Added time from the image
+  difficulty: string;
+  time: string | number;
   onPress?: () => void;
 }
 

@@ -201,8 +201,6 @@ export default function Home() {
               <TouchableOpacity
                 style={{
                   backgroundColor: theme.colors.secondary,
-                  borderWidth: 1,
-                  borderColor: theme.colors.primary,
                   padding: 12,
                   borderRadius: 8,
                   display: "flex",

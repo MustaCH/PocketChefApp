@@ -17,6 +17,7 @@ import { FontAwesome } from "@expo/vector-icons"; // Ajusta la ruta según tu es
 export default function Page() {
   const [recipeName, setRecipeName] = useState("");
   const [recipe, setRecipe] = useState<any>(null); // Considera usar un tipo más específico para la receta
+  const [recipeImage, setRecipeImage] = useState<string | null>(null); // Considera usar un tipo más específico para la imagen
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +31,7 @@ export default function Page() {
     setRecipe(null);
     try {
       const result = await getSpecificRecipe({ recipeName });
-      setRecipe(result); // La API devuelve directamente el objeto de la receta
+      setRecipe(result);
     } catch (err: any) {
       setError(err.message || "Ocurrió un error al buscar la receta.");
     }

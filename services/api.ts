@@ -1,5 +1,6 @@
 import axios from "axios";
 import { RAILWAY_API_URL } from "@env";
+import { EventRecipesInput } from "../types";
 
 const API_URL = RAILWAY_API_URL;
 
@@ -61,6 +62,43 @@ export const getSpecificRecipe = async (data: { recipeName: string }) => {
     console.error("Network or other error (getSpecificRecipe):", error);
     throw new Error(
       "No se pudo obtener la receta específica. Problema de red o error inesperado. Por favor, intenta de nuevo."
+    );
+  }
+};
+
+// Define and export the input type for generateEventRecipes
+
+export const generateEventRecipes = async (data: EventRecipesInput) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/generate-event-recipes`,
+      data
+    );
+    console.log("Response from generateEventRecipes:", response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error(
+        "Error response from server (generateEventRecipes):",
+        error.response.data
+      );
+      console.error(
+        "Error status from server (generateEventRecipes):",
+        error.response.status
+      );
+      const errorMessage =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : error.response.data?.message ||
+            JSON.stringify(error.response.data) ||
+            "Error desconocido del servidor.";
+      throw new Error(
+        `Error del servidor (${error.response.status}): ${errorMessage}`
+      );
+    }
+    console.error("Network or other error (generateEventRecipes):", error);
+    throw new Error(
+      "No se pudieron generar las recetas para el evento. Problema de red o error inesperado. Por favor, intenta de nuevo."
     );
   }
 };
