@@ -12,7 +12,6 @@ import {
 import theme from "../../../styles/theme"; // Ajusta la ruta según tu estructura
 import { getSpecificRecipe } from "../../../services/api"; // Ajusta la ruta según tu estructura
 import { RecipeCard } from "../../../components/ui/RecipeCard"; // Ajusta la ruta según tu estructur
-import { FontAwesome } from "@expo/vector-icons"; // Ajusta la ruta según tu estructura
 
 export default function Page() {
   const [recipeName, setRecipeName] = useState("");

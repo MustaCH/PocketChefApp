@@ -59,7 +59,16 @@ export default function HomeLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="screens/RecipesScreen"
+        options={{
+          title: "Buscar",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="search" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="screens/CreateScreen"
         options={{
           title: "Crear",
           tabBarIcon: ({ color, size }) => (
@@ -70,23 +79,39 @@ export default function HomeLayout() {
               height={30}
             />
           ),
+          tabBarItemStyle: {
+            marginRight: 30,
+          },
         }}
       />
       <Tabs.Screen
-        name="screens/RecipesScreen"
+        name="index"
         options={{
-          title: "Buscar",
+          title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="search" size={size} color={color} />
+            <FontAwesome name="home" size={size} color={theme.colors.white} />
           ),
+          tabBarItemStyle: {
+            backgroundColor: theme.colors.secondary,
+            borderRadius: 100,
+            borderWidth: 1,
+            borderColor: theme.colors.primary,
+            position: "absolute",
+            padding: 10,
+            top: -20,
+            left: "50%",
+            transform: [{ translateX: -31 }], // Ajusta el valor según tus preferencia
+          },
         }}
       />
-
       <Tabs.Screen
         name="screens/EventsScreen"
         options={{
           title: "Eventos",
           tabBarIcon: ({ color, size }) => <EventRecipeIcon color={color} />,
+          tabBarItemStyle: {
+            marginLeft: 30,
+          },
         }}
       />
       <Tabs.Screen

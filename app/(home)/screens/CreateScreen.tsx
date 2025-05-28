@@ -1,16 +1,17 @@
+import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import {
   filterRecipes,
   generateRecipes,
   generateRecipeImageAPI,
-} from "../services/api"; // Importar generateRecipeImageAPI
+} from "../../../services/api"; // Importar generateRecipeImageAPI
 import { FontAwesome } from "@expo/vector-icons";
-import { RecipeCard } from "./ui/RecipeCard";
-import { Recipe } from "../types";
-import { RecipeForm } from "./ui/RecipeForm";
-import { RecipeModal } from "./ui/RecipeModal"; // Import RecipeModal from RecipeFor
-import theme from "../styles/theme";
+import { RecipeCard } from "../../../components/ui/RecipeCard";
+import { Recipe } from "../../../types";
+import { RecipeForm } from "../../../components/ui/RecipeForm";
+import { RecipeModal } from "../../../components/ui/RecipeModal"; // Import RecipeModal from RecipeFor
+import theme from "../../../styles/theme";
 import {
   ScrollView,
   View,
@@ -22,7 +23,7 @@ import {
   Image,
 } from "react-native";
 
-export default function Home() {
+export default function CreateScreen() {
   const insets = useSafeAreaInsets();
   const [ingredients, setIngredients] = useState("");
   const [restrictions, setRestrictions] = useState("");

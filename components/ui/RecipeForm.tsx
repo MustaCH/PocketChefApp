@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { DietaryRestrictionTag } from "./ui/DietaryRestrictionTag";
-import { CreateRecipeIcon } from "./icons/CreateRecipeIcon";
-import theme from "../styles/theme";
+import { DietaryRestrictionTag } from "./DietaryRestrictionTag";
+import { CreateRecipeIcon } from "../icons/CreateRecipeIcon";
+import theme from "../../styles/theme";
 
 interface RecipeFormProps {
   ingredients: string;
