@@ -21,244 +21,113 @@ import {
   Modal,
   Image,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Home() {
   const insets = useSafeAreaInsets();
-  const [ingredients, setIngredients] = useState("");
-  const [restrictions, setRestrictions] = useState("");
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null); // Nuevo estado para la receta seleccionada
-
-  const handleShowRecipeModal = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedRecipe(null);
-  };
-
-  const handleSubmit = async () => {
-    if (ingredients.trim() === "") {
-      setError("Por favor, ingresa al menos un ingrediente.");
-      return;
-    }
-    setLoading(true);
-    setError("");
-    setRecipes([]);
-    try {
-      console.log("Generando recetas con ingredientes:", ingredients.trim());
-      const response = await generateRecipes({
-        ingredients: ingredients.trim(),
-      });
-
-      let finalRecipes: Recipe[] = response.recipes || [];
-      console.log("Recetas generadas:", {
-        count: finalRecipes.length,
-        sample: finalRecipes.length > 0 ? finalRecipes[0] : null,
-      });
-
-      let dietaryRestrictionsForAPI = "";
-      if (typeof restrictions === "string") {
-        dietaryRestrictionsForAPI = restrictions
-          .split(",")
-          .map((s) => s.trim())
-          .filter((s) => s.length > 0)
-          .join(", ");
-      }
-
-      if (dietaryRestrictionsForAPI) {
-        console.log("Aplicando filtros dietéticos:", dietaryRestrictionsForAPI);
-        const recipeStrings = finalRecipes.map((recipe: Recipe) =>
-          JSON.stringify(recipe)
-        );
-        console.log(
-          "Recetas convertidas para filtrado (primeras 2):",
-          recipeStrings.slice(0, 2)
-        );
-
-        const filteredResponse = await filterRecipes({
-          recipes: recipeStrings,
-          dietaryRestrictions: dietaryRestrictionsForAPI,
-        });
-        console.log("Respuesta filtrada recibida:", filteredResponse);
-
-        // Solución: Mantener todas las propiedades de las recetas originales que pasaron el filtro
-        if (
-          filteredResponse.filteredRecipes &&
-          filteredResponse.filteredRecipes.length > 0
-        ) {
-          // Crear un conjunto con los nombres de las recetas filtradas para búsqueda rápida
-          const filteredNames = new Set(filteredResponse.filteredRecipes);
-
-          // Filtrar las recetas originales completas basándonos en los nombres que pasaron el filtro
-          finalRecipes = finalRecipes.filter((recipe) =>
-            filteredNames.has(recipe.name)
-          );
-
-          console.log("Recetas después de filtrar:", {
-            count: finalRecipes.length,
-            sample: finalRecipes.length > 0 ? finalRecipes[0] : null,
-          });
-        } else {
-          finalRecipes = [];
-        }
-      }
-
-      // Generar imágenes para cada receta
-      const recipesWithImages = await Promise.all(
-        finalRecipes.map(async (recipe) => {
-          try {
-            console.log(`Generando imagen para: ${recipe.name}`);
-            const imageResponse = await generateRecipeImageAPI({
-              recipeName: recipe.name,
-            });
-            console.log(
-              `Imagen generada para ${recipe.name}: ${imageResponse.imageUrl}`
-            );
-            return { ...recipe, imageUrl: imageResponse.imageUrl };
-          } catch (imgErr) {
-            console.error(
-              `Error generando imagen para ${recipe.name}:`,
-              imgErr
-            );
-            return recipe; // Devolver la receta original sin imagen si hay error
-          }
-        })
-      );
-
-      setRecipes(recipesWithImages);
-    } catch (err: any) {
-      console.error("Error en handleSubmit:", err);
-      setError(err?.message || "Error al generar recetas");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
-    <ScrollView
+    <LinearGradient
+      colors={[theme.colors.secondary, "transparent"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 0.2 }}
       style={{
-        backgroundColor: theme.colors.backgroundMedium,
+        height: "100%",
+        flex: 1,
       }}
-      showsVerticalScrollIndicator={false}
     >
-      <View>
-        {recipes.length === 0 && (
-          <RecipeForm
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-            restrictions={restrictions}
-            setRestrictions={setRestrictions}
-            onSubmit={handleSubmit}
-            loading={loading}
-            showInputs={recipes.length === 0}
-          />
-        )}
-        {recipes.length > 0 && (
-          <View
+      <ScrollView
+        style={{
+          backgroundColor: "transparent",
+          paddingTop: insets.top + 16,
+          paddingHorizontal: theme.spacing.md,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text
+          style={{
+            fontSize: theme.typography.fontSizeTitle,
+            fontWeight: theme.typography.fontWeightBold,
+            textAlign: "center",
+          }}
+        >
+          ¿Que vamos a hacer hoy?
+        </Text>
+        <View style={{ marginVertical: theme.spacing.md }}>
+          <TouchableOpacity
             style={{
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "center",
               alignItems: "center",
-              paddingHorizontal: 16,
-              marginVertical: 16,
-              justifyContent: "space-between",
-              gap: 16,
+              width: "100%",
+              height: 250,
+              backgroundColor: theme.colors.backgroundLight,
+              borderRadius: 10,
+              position: "relative",
             }}
           >
-            <Text
+            <Image
+              source={require("../assets/images/createrecipeimage.png")}
               style={{
-                fontSize: theme.typography.fontSizeTitle,
-                fontWeight: theme.typography.fontWeightBold,
-                color: theme.colors.textPrimary,
+                width: 210,
+                height: 210,
+                alignSelf: "center",
               }}
-            >
-              ¡Aquí tienes tus delicias!
-            </Text>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  color: theme.colors.secondary,
-                }}
-              >
-                Recetas generadas: {recipes.length}
-              </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: theme.colors.secondary,
-                  padding: 12,
-                  borderRadius: 8,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                }}
-                onPress={() => setRecipes([])}
-              >
-                <FontAwesome
-                  name="refresh"
-                  size={20}
-                  color={theme.colors.white}
-                  style={{ marginRight: 10 }}
-                />
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: "bold",
-                    color: theme.colors.white,
-                  }}
-                >
-                  Volver a generar
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-      {error ? (
-        <Text style={{ color: theme.colors.error }}>{error}</Text>
-      ) : null}
-      {recipes.length > 0 && (
-        <View
-          style={{ paddingHorizontal: 16, marginBottom: insets.bottom + 60 }}
-        >
-          {recipes.map((item, index) => (
-            <View key={index} style={{ marginBottom: 16 }}>
-              <RecipeCard
-                name={item.name}
-                imageUrl={item.imageUrl}
-                difficulty={item.dificulty || "Desconocida"}
-                time={item.estimatedTime || "Desconocido"}
-                onPress={() => handleShowRecipeModal(item)} // Modificado para pasar la receta
-              />
-            </View>
-          ))}
+            />
+            <Text style={{ fontSize: 16 }}>Crear recetas</Text>
+          </TouchableOpacity>
         </View>
-      )}
-      {selectedRecipe && (
-        <RecipeModal
-          item={selectedRecipe}
-          visible={showModal}
-          showModal={() => setShowModal(true)} // showModal no se usa directamente aquí, pero se mantiene por consistencia si es necesario
-          closeModal={handleCloseModal} // Modificado para usar la nueva función de cierre
-        />
-      )}
-    </ScrollView>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: theme.spacing.md,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingVertical: 8,
+              backgroundColor: theme.colors.backgroundLight,
+              borderRadius: 10,
+            }}
+          >
+            <Image
+              source={require("../assets/images/recipesimage.png")}
+              style={{
+                width: 150,
+                height: 150,
+                alignSelf: "center",
+              }}
+            />
+            <Text style={{ fontSize: 16 }}>Buscar recetas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingVertical: 8,
+              backgroundColor: theme.colors.backgroundLight,
+              borderRadius: 10,
+            }}
+          >
+            <Image
+              source={require("../assets/images/eventrecipeimage.png")}
+              style={{
+                width: 150,
+                height: 150,
+                alignSelf: "center",
+              }}
+            />
+            <Text style={{ fontSize: 16 }}>Evento</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }

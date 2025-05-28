@@ -87,6 +87,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: "Home",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" size={size} color={theme.colors.white} />
