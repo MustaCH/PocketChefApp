@@ -14,14 +14,15 @@ import theme from "../../../styles/theme";
 import { generateEventRecipes } from "../../../services/api"; // Ajusta la ruta si es necesario
 import { CreateRecipeIcon } from "../../../components/icons/CreateRecipeIcon"; // Ajusta la ruta si es necesario
 import { EventRecipesInput } from "../../../types";
+import { RecipeCard } from "../../../components/ui/RecipeCard";
 
 export default function EventsScreen() {
-  const [eventType, setEventType] = useState("");
+  const [eventType, setEventType] = useState("Cita romantica");
   const [numberOfGuests, setNumberOfGuests] = useState("");
   const [dietaryRestrictions, setDietaryRestrictions] = useState("");
-  const [mealType, setMealType] = useState(""); // e.g., "starter", "main course", "dessert"
+  const [mealType, setMealType] = useState("main course");
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedRecipes, setGeneratedRecipes] = useState<any[]>([]); // Para almacenar las recetas generadas
+  const [generatedRecipes, setGeneratedRecipes] = useState<any[]>([]);
 
   const handleGenerateMenu = async () => {
     if (!eventType.trim()) {
@@ -39,7 +40,7 @@ export default function EventsScreen() {
     ) {
       Alert.alert(
         "Error",
-        "Por favor, ingresa un tipo de comida válido (starter, main course, o dessert)."
+        "Por favor, ingresa un tipo de comida válido (Entrada, Plato principal, o Postre)."
       );
       return;
     }
@@ -85,17 +86,14 @@ export default function EventsScreen() {
     >
       <Text style={styles.headerTitle}>Crear Menu</Text>
       <View style={styles.formContainer}>
-        <Text style={styles.sectionTitle}>Event Details</Text>
-
-        <Text style={styles.label}>Event Type</Text>
+        <Text style={styles.label}>¿Que tipo de evento es?</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={eventType}
             style={styles.picker}
             onValueChange={(itemValue, itemIndex) => setEventType(itemValue)}
-            dropdownIconColor={theme.colors.textPrimary} // Color del icono del desplegable
+            dropdownIconColor={theme.colors.textPrimary}
           >
-            <Picker.Item label="Select Event Type" value="" />
             <Picker.Item label="Cita romantica" value="Cita romantica" />
             <Picker.Item
               label="Reunión con amigos"
@@ -109,7 +107,7 @@ export default function EventsScreen() {
           </Picker>
         </View>
 
-        <Text style={styles.label}>Number of Guests</Text>
+        <Text style={styles.label}>Cantidad de invitados</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter number of guests"
@@ -119,7 +117,7 @@ export default function EventsScreen() {
           placeholderTextColor={theme.colors.textPlaceholder}
         />
 
-        <Text style={styles.label}>Dietary Restrictions</Text>
+        <Text style={styles.label}>Restricciones dietarias (opcional)</Text>
         <TextInput
           style={styles.input}
           placeholder="Select Restrictions (e.g., vegetarian, gluten-free)"
@@ -127,16 +125,19 @@ export default function EventsScreen() {
           onChangeText={setDietaryRestrictions}
           placeholderTextColor={theme.colors.textPlaceholder}
         />
-
-        <Text style={styles.label}>Meal Type</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Meal Type (starter, main course, dessert)"
-          value={mealType}
-          onChangeText={setMealType}
-          placeholderTextColor={theme.colors.textPlaceholder}
-        />
-
+        <Text style={styles.label}>Tipo de comida</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={mealType}
+            style={styles.picker}
+            onValueChange={(itemValue, itemIndex) => setMealType(itemValue)}
+            dropdownIconColor={theme.colors.textPrimary}
+          >
+            <Picker.Item label="Entrada" value="starter" />
+            <Picker.Item label="Plato principal" value="main course" />
+            <Picker.Item label="Postre" value="dessert" />
+          </Picker>
+        </View>
         <TouchableOpacity
           style={[styles.button, isLoading && styles.buttonDisabled]}
           onPress={handleGenerateMenu}
@@ -147,7 +148,7 @@ export default function EventsScreen() {
           ) : (
             <>
               <CreateRecipeIcon color={theme.colors.white} filled={true} />
-              <Text style={styles.buttonText}>Crear menú</Text>
+              <Text style={styles.buttonText}>CREAR MENÚ</Text>
             </>
           )}
         </TouchableOpacity>
@@ -157,12 +158,15 @@ export default function EventsScreen() {
           <View style={styles.resultsContainer}>
             <Text style={styles.resultsTitle}>Generated Recipes:</Text>
             {generatedRecipes.map((recipe, index) => (
-              <View key={index} style={styles.recipeCard}>
-                <Text style={styles.recipeName}>{recipe.name}</Text>
-                <Text style={styles.recipeDescription}>
-                  {recipe.description}
-                </Text>
-              </View>
+              <RecipeCard
+                key={index}
+                name={recipe.name}
+                image={recipe.image}
+                rating={recipe.rating}
+                reviews={recipe.reviews}
+                difficulty={recipe.difficulty}
+                time={recipe.time}
+              />
             ))}
           </View>
         )}
@@ -192,9 +196,8 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizeTitle, // Un poco más grande
     fontWeight: theme.typography.fontWeightBold,
     color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.sm,
     alignSelf: "flex-start", // Alineado a la izquierda como en la imagen
-    paddingLeft: theme.spacing.sm, // Pequeño padding para que no esté pegado al borde
   },
   sectionTitle: {
     fontSize: theme.typography.fontSizeSubtext,
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white, // Texto oscuro sobre fondo naranja
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: theme.typography.fontWeightBold,
   },
   resultsContainer: {
