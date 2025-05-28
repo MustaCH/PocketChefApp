@@ -1,13 +1,21 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 
+interface CreateRecipeIconProps {
+  width?: number;
+  height?: number;
+  color?: string;
+  filled?: boolean;
+  strokeWidth?: number;
+}
+
 export const CreateRecipeIcon = ({
-  width = 30,
-  height = 30,
+  width,
+  height,
   color,
   filled,
   strokeWidth = 2,
-}) => {
+}: CreateRecipeIconProps) => {
   return (
     <Svg
       width={width}

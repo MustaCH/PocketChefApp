@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { DietaryRestrictionTag } from "./ui/DietaryRestrictionTag";
+import { CreateRecipeIcon } from "./icons/CreateRecipeIcon";
 import theme from "../styles/theme";
 
 interface RecipeFormProps {
@@ -137,25 +139,12 @@ export function RecipeForm({
         <Text style={styles.label}>Restricciones Dietarias (Opcional)</Text>
         <View style={styles.restrictionsContainer}>
           {dietaryRestrictions.map((restriction) => (
-            <TouchableOpacity
+            <DietaryRestrictionTag
               key={restriction.id}
-              style={[
-                styles.restrictionButton,
-                restrictions.includes(restriction.id) &&
-                  styles.restrictionButtonSelected,
-              ]}
+              label={restriction.label}
+              selected={restrictions.includes(restriction.id)}
               onPress={() => handleRestrictionToggle(restriction.id)}
-            >
-              <Text
-                style={[
-                  styles.restrictionButtonText,
-                  restrictions.includes(restriction.id) &&
-                    styles.restrictionButtonTextSelected,
-                ]}
-              >
-                {restriction.label}
-              </Text>
-            </TouchableOpacity>
+            />
           ))}
         </View>
       </View>
@@ -193,13 +182,13 @@ export function RecipeForm({
             end={{ x: 1, y: 0 }}
             style={styles.gradientButton}
           >
-            <FontAwesome
-              name="magic"
-              size={20}
+            <CreateRecipeIcon
+              filled={true}
               color={theme.colors.white}
-              style={{ marginRight: 10 }}
+              width={20}
+              height={20}
             />
-            <Text style={styles.submitButtonText}>CREAR</Text>
+            <Text style={styles.submitButtonText}>CREAR RECETAS</Text>
           </LinearGradient>
         </TouchableOpacity>
       )}
@@ -349,7 +338,8 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.md,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: "100%", // Debe coincidir con submitButton
+    width: "100%",
+    gap: theme.spacing.sm,
   },
   submitButtonText: {
     color: theme.colors.white,

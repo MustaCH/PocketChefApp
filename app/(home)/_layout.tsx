@@ -63,7 +63,12 @@ export default function HomeLayout() {
         options={{
           title: "Crear",
           tabBarIcon: ({ color, size }) => (
-            <CreateRecipeIcon filled={true} color={color} />
+            <CreateRecipeIcon
+              filled={true}
+              color={color}
+              width={30}
+              height={30}
+            />
           ),
         }}
       />

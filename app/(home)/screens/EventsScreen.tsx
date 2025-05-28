@@ -15,14 +15,40 @@ import { generateEventRecipes } from "../../../services/api"; // Ajusta la ruta 
 import { CreateRecipeIcon } from "../../../components/icons/CreateRecipeIcon"; // Ajusta la ruta si es necesario
 import { EventRecipesInput } from "../../../types";
 import { RecipeCard } from "../../../components/ui/RecipeCard";
+import DietaryRestrictionTag from "../../../components/ui/DietaryRestrictionTag";
+import { LinearGradient } from "expo-linear-gradient";
+
+const dietaryRestrictions = [
+  { id: "vegan", label: "Vegano" },
+  { id: "vegetarian", label: "Vegetariano" },
+  { id: "gluten-free", label: "Libre de Gluten" },
+  { id: "lactose-free", label: "Libre de Lactosa" },
+  { id: "low-carb", label: "Bajo en Carbs" },
+  { id: "keto", label: "Keto" },
+  { id: "paleo", label: "Paleo" },
+];
 
 export default function EventsScreen() {
   const [eventType, setEventType] = useState("Cita romantica");
   const [numberOfGuests, setNumberOfGuests] = useState("");
-  const [dietaryRestrictions, setDietaryRestrictions] = useState("");
+  const [restrictions, setRestrictions] = useState("");
   const [mealType, setMealType] = useState("main course");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [generatedRecipes, setGeneratedRecipes] = useState<any[]>([]);
+
+  const handleRestrictionToggle = (restrictionId: string) => {
+    const currentRestrictions = restrictions
+      .split(",")
+      .map((r) => r.trim())
+      .filter((r) => r);
+    if (currentRestrictions.includes(restrictionId)) {
+      setRestrictions(
+        currentRestrictions.filter((r) => r !== restrictionId).join(", ")
+      );
+    } else {
+      setRestrictions([...currentRestrictions, restrictionId].join(", "));
+    }
+  };
 
   const handleGenerateMenu = async () => {
     if (!eventType.trim()) {
@@ -45,7 +71,7 @@ export default function EventsScreen() {
       return;
     }
 
-    const restrictionsArray = dietaryRestrictions
+    const restrictionsArray = restrictions
       .split(",")
       .map((r) => r.trim())
       .filter((r) => r !== "");
@@ -58,7 +84,7 @@ export default function EventsScreen() {
         restrictionsArray.length > 0 ? restrictionsArray : undefined,
     };
 
-    setIsLoading(true);
+    setLoading(true);
     setGeneratedRecipes([]);
     try {
       const result = await generateEventRecipes(input);
@@ -76,7 +102,7 @@ export default function EventsScreen() {
         error.message || "No se pudieron generar las recetas. Intenta de nuevo."
       );
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -84,8 +110,8 @@ export default function EventsScreen() {
       style={styles.scrollView}
       contentContainerStyle={styles.container}
     >
-      <Text style={styles.headerTitle}>Crear Menu</Text>
       <View style={styles.formContainer}>
+        <Text style={styles.headerTitle}>¡Crea el menu de hoy!</Text>
         <Text style={styles.label}>¿Que tipo de evento es?</Text>
         <View style={styles.pickerContainer}>
           <Picker
@@ -118,13 +144,16 @@ export default function EventsScreen() {
         />
 
         <Text style={styles.label}>Restricciones dietarias (opcional)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Select Restrictions (e.g., vegetarian, gluten-free)"
-          value={dietaryRestrictions}
-          onChangeText={setDietaryRestrictions}
-          placeholderTextColor={theme.colors.textPlaceholder}
-        />
+        <View style={styles.restrictionsContainer}>
+          {dietaryRestrictions.map((restriction) => (
+            <DietaryRestrictionTag
+              key={restriction.id}
+              label={restriction.label}
+              selected={restrictions.includes(restriction.id)}
+              onPress={() => handleRestrictionToggle(restriction.id)}
+            />
+          ))}
+        </View>
         <Text style={styles.label}>Tipo de comida</Text>
         <View style={styles.pickerContainer}>
           <Picker
@@ -138,22 +167,34 @@ export default function EventsScreen() {
             <Picker.Item label="Postre" value="dessert" />
           </Picker>
         </View>
-        <TouchableOpacity
-          style={[styles.button, isLoading && styles.buttonDisabled]}
-          onPress={handleGenerateMenu}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color={theme.colors.textPrimary} />
-          ) : (
-            <>
-              <CreateRecipeIcon color={theme.colors.white} filled={true} />
-              <Text style={styles.buttonText}>CREAR MENÚ</Text>
-            </>
-          )}
-        </TouchableOpacity>
-
-        {/* Aquí podrías mostrar las recetas generadas */}
+        {loading ? (
+          <ActivityIndicator color={theme.colors.textPrimary} />
+        ) : (
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={handleGenerateMenu}
+            disabled={loading}
+          >
+            <LinearGradient
+              colors={[
+                theme.colors.secondary,
+                theme.colors.primary,
+                theme.colors.secondary,
+              ]}
+              start={{ x: 1, y: 2 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.gradientButton}
+            >
+              <CreateRecipeIcon
+                filled={true}
+                color={theme.colors.white}
+                width={20}
+                height={20}
+              />
+              <Text style={styles.submitButtonText}>CREAR MENÚ</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
         {generatedRecipes.length > 0 && (
           <View style={styles.resultsContainer}>
             <Text style={styles.resultsTitle}>Generated Recipes:</Text>
@@ -184,75 +225,78 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     backgroundColor: theme.colors.backgroundMedium,
-    padding: theme.spacing.lg, // Aumentado el padding general
-    paddingTop: theme.spacing.xl, // Más padding arriba
   },
   formContainer: {
-    width: "100%",
-    maxWidth: 500,
-    backgroundColor: theme.colors.backgroundMedium,
+    backgroundColor: theme.colors.backgroundDark,
+    padding: theme.spacing.lg,
+    borderRadius: theme.borderRadius.lg,
+    margin: theme.spacing.sm,
+    gap: theme.spacing.sm, // 16px
   },
   headerTitle: {
-    fontSize: theme.typography.fontSizeTitle, // Un poco más grande
+    // Changed
+    fontSize: theme.typography.fontSizeTitle,
     fontWeight: theme.typography.fontWeightBold,
     color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.sm,
-    alignSelf: "flex-start", // Alineado a la izquierda como en la imagen
-  },
-  sectionTitle: {
-    fontSize: theme.typography.fontSizeSubtext,
-    fontWeight: theme.typography.fontWeightBold,
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.lg, // Más espacio debajo del título de la sección
+    marginBottom: theme.spacing.lg, // Changed from sm
+    textAlign: "center", // Changed from alignSelf: "flex-start"
   },
   label: {
     fontSize: theme.typography.fontSizeBody,
+    fontWeight: theme.typography.fontWeightSemiBold, // Added
     color: theme.colors.textSecondary,
-    marginBottom: theme.spacing.xs,
-    marginTop: theme.spacing.md,
   },
   input: {
-    backgroundColor: theme.colors.backgroundMedium, // Color de fondo para inputs
+    // Changed
+    backgroundColor: theme.colors.backgroundMedium,
     color: theme.colors.textPrimary,
     paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
+    paddingVertical: theme.spacing.md - 4, // Changed from theme.spacing.sm
     borderRadius: theme.borderRadius.sm,
     fontSize: theme.typography.fontSizeBody,
     borderWidth: 1,
-    borderColor: theme.colors.primary, // Corrected from theme.colors.border to theme.colors.primary to match original
-    marginBottom: theme.spacing.md,
+    borderColor: theme.colors.primary,
   },
   pickerContainer: {
     backgroundColor: theme.colors.backgroundMedium,
     borderRadius: theme.borderRadius.sm,
     borderWidth: 1,
-    borderColor: theme.colors.primary, // Assuming border color should be consistent, changed from theme.colors.border
-    marginBottom: theme.spacing.md,
-    justifyContent: "center", // Centra el Picker verticalmente si es necesario
+    borderColor: theme.colors.primary,
+    justifyContent: "center",
   },
   picker: {
     color: theme.colors.textPrimary,
-    height: 50, // Ajusta la altura según sea necesario
-    // El padding y otros estilos pueden necesitar ajustes específicos para Picker
+    height: 52,
   },
-  button: {
-    backgroundColor: theme.colors.secondary, // Color naranja como en la imagen
+  restrictionsContainer: {
+    // Changed
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: theme.spacing.lg - 4, // Added from RecipeForm
+    gap: theme.spacing.sm + 2, // 10
+  },
+  submitButton: {
+    backgroundColor: "transparent",
     paddingVertical: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    display: "flex",
+    borderRadius: theme.borderRadius.sm,
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    gap: theme.spacing.sm,
+    overflow: "hidden",
+  },
+  gradientButton: {
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: theme.spacing.lg,
-    elevation: 2,
+    justifyContent: "center",
+    paddingVertical: theme.spacing.md,
+    gap: theme.spacing.sm,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: "100%",
   },
-  buttonDisabled: {
-    backgroundColor: theme.colors.backgroundMedium,
-  },
-  buttonText: {
-    color: theme.colors.white, // Texto oscuro sobre fondo naranja
-    fontSize: 18,
+  submitButtonText: {
+    color: theme.colors.white,
+    fontSize: theme.typography.fontSizeBody + 2, // 18
     fontWeight: theme.typography.fontWeightBold,
   },
   resultsContainer: {
@@ -265,31 +309,4 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     marginBottom: theme.spacing.md,
   },
-  recipeCard: {
-    backgroundColor: theme.colors.backgroundMedium,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.sm,
-    marginBottom: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.primary,
-  },
-  recipeName: {
-    fontSize: theme.typography.fontSizeTitle,
-    fontWeight: theme.typography.fontWeightBold,
-    color: theme.colors.textPrimary,
-  },
-  recipeDescription: {
-    fontSize: theme.typography.fontSizeBody,
-    color: theme.colors.textSecondary,
-    marginTop: theme.spacing.xs,
-  },
 });
-
-// Es posible que necesites definir GenerateEventRecipesInput en un archivo de tipos
-// o importarlo desde donde esté definido si no es en api.ts
-// export type GenerateEventRecipesInput = {
-//   eventType: string;
-//   numberOfGuests: number;
-//   mealType: "starter" | "main course" | "dessert";
-//   dietaryRestrictions?: string[];
-// };
